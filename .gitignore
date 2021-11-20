@@ -1,0 +1,4 @@
+winder/node_modules
+winder/build
+winder-backend/node_modules
+winder-backend/.env

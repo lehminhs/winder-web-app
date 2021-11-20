@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
 
 import MainCard from './main-card/MainCard';
+import LoadingScreen from './../loading-screen/LoadingScreen'
 
 import { GlobalContext } from '../../Contexts';
 
@@ -71,33 +72,40 @@ const SidePanel = (props) => {
         <Tab label="Completed" onClick={() => { handleDisplay(3) }}
           className={(currentTab == 3 ? 'sidepanel__selected sidepanel__tab' : 'sidepanel__tab')} />
       </Box>
-      <Box className="sidepanel__content" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-        <Grid container>
-          <Grid item xs={4} className="sidepanel__header">
-            Title
-          </Grid>
-          <Grid item xs={1} className="sidepanel__header">
-            #
-          </Grid>
-          <Grid item xs={2} className="sidepanel__header">
-            Assignee
-          </Grid>
-          <Grid item xs={2} className="sidepanel__header">
-            Date
-          </Grid>
-          <Grid item xs={2} className="sidepanel__header">
-            Status
-          </Grid>
-          <Grid item xs={1} className="sidepanel__header">
-            Priority
-          </Grid>
-        </Grid>
-        <Box sx={{ overflow: 'auto', height: { sm: 'calc(100vh - 137px)', xs: 'calc(100vh - 121px)' }, boxSizing: 'border-box' }}>
-          {
-            display.map(el => <MainCard key={el._id} refresh={handleRefresh} taskId={el._id} users={props.users} ticketNumber={el.ticketNumber} title={el.title} assignee={el.assignee} assigneeName={el.assigneeName} date={el.createdAtShort} status={el.status} priority={el.priority} description={el.description} creator={el.creator} creatorName={el.creatorName} />)
-          }
+      {props.loading && (
+        <Box>
+          <LoadingScreen />
         </Box>
-      </Box>
+      )}
+      {!props.loading && (
+        <Box className="sidepanel__content" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
+          <Grid container>
+            <Grid item xs={4} className="sidepanel__header">
+              Title
+            </Grid>
+            <Grid item xs={1} className="sidepanel__header">
+              #
+            </Grid>
+            <Grid item xs={2} className="sidepanel__header">
+              Assignee
+            </Grid>
+            <Grid item xs={2} className="sidepanel__header">
+              Date
+            </Grid>
+            <Grid item xs={2} className="sidepanel__header">
+              Status
+            </Grid>
+            <Grid item xs={1} className="sidepanel__header">
+              Priority
+            </Grid>
+          </Grid>
+          <Box sx={{ overflow: 'auto', height: { sm: 'calc(100vh - 137px)', xs: 'calc(100vh - 121px)' }, boxSizing: 'border-box' }}>
+            {
+              display.map(el => <MainCard key={el._id} refresh={handleRefresh} taskId={el._id} users={props.users} ticketNumber={el.ticketNumber} title={el.title} assignee={el.assignee} assigneeName={el.assigneeName} date={el.createdAtShort} status={el.status} priority={el.priority} description={el.description} creator={el.creator} creatorName={el.creatorName} />)
+            }
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 }

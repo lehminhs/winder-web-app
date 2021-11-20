@@ -64,6 +64,8 @@ const AppWrapper = () => {
 }
 
 const App = () => {
+  const [loading, setLoading] = useState(false);
+
   const [users, setUsers] = useState([]); 
   const [allTasks, setAllTasks] = useState([]);
   const [completed, setCompleted] = useState([]);
@@ -72,8 +74,12 @@ const App = () => {
   const [filteredCompleted, setFilteredCompleted] = useState([]);
 
   const getTasks = () => {
+    setLoading(true);
+
     store.dispatch(fetchTasks())
       .then((res) => {
+        setLoading(false);
+
         // Set allTasks to be all uncompleted tasks
         setAllTasks(res.payload.filter((task) => {
           return task.status != 'COMPLETED';
@@ -143,7 +149,7 @@ const App = () => {
   return (
     <div className="app">
       <TopBar users={users} refresh={refresh} search={search} />
-      <SidePanel key={filteredTasks} refresh={refresh} users={users} allTasks={filteredTasks} completed={filteredCompleted} />
+      <SidePanel key={filteredTasks} refresh={refresh} users={users} allTasks={filteredTasks} completed={filteredCompleted} loading={loading}/>
     </div>
   );
 }
